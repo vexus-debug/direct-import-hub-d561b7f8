@@ -6,3 +6,6 @@
 - [ ] Validate the finished workflows in the preview
 - [x] Send the login Create account link to Clinexus WhatsApp
 - [x] Send every public Get Started link to Clinexus WhatsApp
+- [ ] Apply the quiet clinical visual system to shared dashboard surfaces
+- [ ] Simplify the dashboard home, Patients, and Appointments pages
+- [ ] Validate the dashboard redesign and existing workflows
