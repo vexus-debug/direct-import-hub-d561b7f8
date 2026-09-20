@@ -26,10 +26,10 @@ import { PageTourButton } from "@/components/dashboard/tour/PageTourButton";
 
 /* ─── Colour maps ────────────────────────────────────────────── */
 const statusColors: Record<string, string> = {
-  scheduled:    "bg-primary/10 text-primary border-primary/20",
+  scheduled:    "bg-primary/[0.05] text-primary border-primary/20",
   "in-progress": "bg-amber-500/10 text-amber-700 border-amber-500/20",
-  completed:    "bg-emerald-500/10 text-emerald-700 border-emerald-500/20",
-  cancelled:    "bg-red-500/10 text-red-700 border-red-500/20",
+  completed:    "bg-emerald-500/[0.05] text-emerald-700 border-emerald-500/20",
+  cancelled:    "bg-red-500/[0.05] text-red-700 border-red-500/20",
 };
 const statusDots: Record<string, string> = {
   scheduled:    "bg-primary",
@@ -38,9 +38,9 @@ const statusDots: Record<string, string> = {
   cancelled:    "bg-red-500",
 };
 const activityColors: Record<string, string> = {
-  appointment:  "bg-primary/10 text-primary",
-  payment:      "bg-emerald-500/10 text-emerald-600",
-  patient:      "bg-primary/10 text-primary",
+  appointment:  "bg-primary/[0.05] text-primary",
+  payment:      "bg-emerald-500/[0.05] text-emerald-600",
+  patient:      "bg-primary/[0.05] text-primary",
   lab:          "bg-amber-500/10 text-amber-600",
   prescription: "bg-rose-500/10 text-rose-600",
 };
@@ -165,11 +165,11 @@ export default function DashboardHome() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-1" data-tour="page-header">
           <div>
             <div className="flex items-center gap-2 mb-0.5">
-              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-clinic-teal-light flex items-center justify-center shadow-md shadow-primary/20">
+              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-clinic-teal-light flex items-center justify-center ">
                 <Stethoscope className="h-4 w-4 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-foreground tracking-tight leading-tight">
+                <h1 className="text-lg font-bold text-foreground tracking-normal leading-tight">
                   {getGreeting()}, {userName || "Doctor"}
                 </h1>
                 <p className="text-xs text-muted-foreground">
@@ -203,18 +203,18 @@ export default function DashboardHome() {
         {/* Patient count — large number card */}
         {canSeePatients && (
           <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 bg-card h-full group hover:shadow-lg hover:border-primary/20 transition-all duration-300">
+            <Card className="relative overflow-hidden border-border/50 bg-card h-full group   transition-all duration-300">
               <CardContent className="p-5 flex flex-col justify-between h-full">
                 <div className="flex items-center justify-between">
-                  <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <div className="h-9 w-9 rounded-xl bg-primary/[0.05] flex items-center justify-center">
                     <Users className="h-4.5 w-4.5 text-primary" />
                   </div>
-                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 bg-emerald-500/[0.05] px-2 py-0.5 rounded-full">
                     <ArrowUpRight className="h-3 w-3" /> +12%
                   </div>
                 </div>
                 <div className="mt-4">
-                  <p className="text-3xl font-black tracking-tight text-foreground tabular-nums">
+                  <p className="text-3xl font-bold tracking-normal text-foreground tabular-nums">
                     <AnimatedCounter value={s.totalPatients} />
                   </p>
                   <p className="text-[11px] font-medium text-muted-foreground mt-0.5 uppercase tracking-wider">Total Patients</p>
@@ -227,7 +227,7 @@ export default function DashboardHome() {
         {/* Today's appointments — radial gauge */}
         {canSeeAppointments && (
           <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 bg-card h-full group hover:shadow-lg hover:border-emerald-500/20 transition-all duration-300">
+            <Card className="relative overflow-hidden border-border/50 bg-card h-full group   transition-all duration-300">
               <CardContent className="p-5 flex flex-col items-center justify-center h-full">
                 <RadialGauge
                   value={schedule.filter(a => a.status === "completed").length}
@@ -236,7 +236,7 @@ export default function DashboardHome() {
                   color="hsl(var(--success))"
                 />
                 <div className="text-center mt-2">
-                  <p className="text-2xl font-black text-foreground tabular-nums">
+                  <p className="text-2xl font-bold text-foreground tabular-nums">
                     <AnimatedCounter value={s.todayAppointments} />
                   </p>
                   <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Today's Appointments</p>
@@ -249,18 +249,18 @@ export default function DashboardHome() {
         {/* Pending Payments — accent warning card */}
         {canSeeBilling && (
           <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 bg-card h-full group hover:shadow-lg hover:border-gold/20 transition-all duration-300">
+            <Card className="relative overflow-hidden border-border/50 bg-card h-full group   transition-all duration-300">
               <CardContent className="p-5 flex flex-col justify-between h-full">
                 <div className="flex items-center justify-between">
-                  <div className="h-9 w-9 rounded-xl bg-gold/10 flex items-center justify-center">
+                  <div className="h-9 w-9 rounded-xl bg-gold/[0.05] flex items-center justify-center">
                     <CreditCard className="h-4.5 w-4.5 text-gold-deep" />
                   </div>
-                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-red-600 bg-red-500/10 px-2 py-0.5 rounded-full">
+                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-red-600 bg-red-500/[0.05] px-2 py-0.5 rounded-full">
                     <ArrowDownRight className="h-3 w-3" /> -5%
                   </div>
                 </div>
                 <div className="mt-4">
-                  <p className="text-3xl font-black tracking-tight text-foreground tabular-nums">
+                  <p className="text-3xl font-bold tracking-normal text-foreground tabular-nums">
                     <AnimatedCounter value={s.pendingPayments} />
                   </p>
                   <p className="text-[11px] font-medium text-muted-foreground mt-0.5 uppercase tracking-wider">Pending Payments</p>
@@ -273,20 +273,14 @@ export default function DashboardHome() {
         {/* Monthly Revenue — hero metric */}
         {canSeeBilling && (
           <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 h-full group hover:shadow-lg hover:border-primary/20 transition-all duration-300">
-              {/* Gradient shimmer bg */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.06] via-transparent to-clinic-teal-light/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <CardContent className="relative p-5 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between">
-                  <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <TrendingUp className="h-4.5 w-4.5 text-primary" />
+            <Card className="relative overflow-hidden border-border/50 h-full group   transition-all duration-300">
                   </div>
-                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 bg-emerald-500/[0.05] px-2 py-0.5 rounded-full">
                     <ArrowUpRight className="h-3 w-3" /> +8.2%
                   </div>
                 </div>
                 <div className="mt-4">
-                  <p className="text-2xl font-black tracking-tight text-foreground tabular-nums">
+                  <p className="text-2xl font-bold tracking-normal text-foreground tabular-nums">
                     <AnimatedCounter value={s.monthlyRevenue} formatter={formatCurrency} />
                   </p>
                   <p className="text-[11px] font-medium text-muted-foreground mt-0.5 uppercase tracking-wider">Revenue ({format(new Date(), "MMM")})</p>
@@ -389,11 +383,11 @@ export default function DashboardHome() {
           {/* Revenue trend — sleek area */}
           {canSeeBilling && (
             <motion.div variants={stagger.item} className="lg:col-span-3 min-w-0">
-              <Card className="border-border/50 bg-card h-full hover:shadow-lg transition-shadow duration-300">
+              <Card className="border-border/50 bg-card h-full  transition-shadow duration-300">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="h-8 w-8 rounded-lg bg-primary/[0.05] flex items-center justify-center">
                         <BarChart3 className="h-4 w-4 text-primary" />
                       </div>
                       <div>
@@ -446,10 +440,10 @@ export default function DashboardHome() {
 
           {/* Treatment breakdown — horizontal bars */}
           <motion.div variants={stagger.item} className="lg:col-span-2 min-w-0">
-            <Card className="border-border/50 bg-card h-full hover:shadow-lg transition-shadow duration-300">
+            <Card className="border-border/50 bg-card h-full  transition-shadow duration-300">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-gold/10 flex items-center justify-center">
+                  <div className="h-8 w-8 rounded-lg bg-gold/[0.05] flex items-center justify-center">
                     <CircleDot className="h-4 w-4 text-gold-deep" />
                   </div>
                   <div>
@@ -506,12 +500,12 @@ export default function DashboardHome() {
 
         {/* Today's Schedule — Timeline Cards */}
         {canSeeAppointments && (
-          <Card className="lg:col-span-5 min-w-0 overflow-hidden border-border/50 bg-card hover:shadow-lg transition-shadow duration-300">
+          <Card className="lg:col-span-5 min-w-0 overflow-hidden border-border/50 bg-card  transition-shadow duration-300">
 
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                  <div className="h-8 w-8 rounded-lg bg-emerald-500/[0.05] flex items-center justify-center">
                     <CalendarDays className="h-4 w-4 text-emerald-600" />
                   </div>
                   <div>
@@ -557,7 +551,7 @@ export default function DashboardHome() {
                         </div>
                         {/* Patient info */}
                         <Avatar className="h-8 w-8 shrink-0">
-                          <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-bold">
+                          <AvatarFallback className="bg-primary/[0.05] text-primary text-[10px] font-bold">
                             {initials}
                           </AvatarFallback>
                         </Avatar>
@@ -590,11 +584,11 @@ export default function DashboardHome() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="border-border/50 bg-card h-full hover:shadow-lg transition-shadow duration-300">
+            <Card className="border-border/50 bg-card h-full  transition-shadow duration-300">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <div className="h-8 w-8 rounded-lg bg-primary/[0.05] flex items-center justify-center">
                       <CalendarCheck className="h-4 w-4 text-primary" />
                     </div>
                     <div>
@@ -631,10 +625,10 @@ export default function DashboardHome() {
         )}
 
         {/* Activity Feed — Compact Timeline */}
-        <Card className="lg:col-span-3 min-w-0 overflow-hidden border-border/50 bg-card hover:shadow-lg transition-shadow duration-300">
+        <Card className="lg:col-span-3 min-w-0 overflow-hidden border-border/50 bg-card  transition-shadow duration-300">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-primary/[0.05] flex items-center justify-center">
                 <Activity className="h-4 w-4 text-primary" />
               </div>
               <div>

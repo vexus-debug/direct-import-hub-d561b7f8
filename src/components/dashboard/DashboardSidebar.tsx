@@ -91,7 +91,7 @@ export function DashboardSidebar() {
         )}
         <item.icon className={cn(
           "h-4 w-4 shrink-0 relative z-10 transition-all duration-200",
-          active ? "text-sidebar-primary" : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80 group-hover:scale-110"
+          active ? "text-sidebar-primary" : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80 "
         )} />
         {!collapsed && (
           <span className="relative z-10 truncate">{item.title}</span>

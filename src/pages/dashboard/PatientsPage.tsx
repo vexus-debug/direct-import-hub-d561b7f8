@@ -203,12 +203,12 @@ export default function PatientsPage() {
                     return (
                       <motion.div key={p.id} variants={stagger.item}>
                         <div
-                          className="group relative p-4 rounded-xl border border-border hover:border-primary/30 bg-card hover:shadow-md transition-all duration-200 cursor-pointer"
+                          className="group relative p-4 rounded-xl border border-border hover:border-primary/30 bg-card  transition-all duration-200 cursor-pointer"
                           onClick={() => navigate(`${basePath}/patients/${p.id}`)}
                         >
                           <div className="flex items-center gap-3 mb-3">
-                            <Avatar className="h-10 w-10 ring-2 ring-border group-hover:ring-primary/20 transition-all">
-                              <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">{initials}</AvatarFallback>
+                            <Avatar className="h-10 w-10 ring-1 ring-border group-hover:ring-primary/20 transition-all">
+                              <AvatarFallback className="bg-primary/[0.05] text-primary text-sm font-bold">{initials}</AvatarFallback>
                             </Avatar>
                             <div className="min-w-0">
                               <p className="font-semibold text-sm text-foreground truncate group-hover:text-primary transition-colors">
@@ -221,7 +221,7 @@ export default function PatientsPage() {
                             <span className={cn(
                               "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold",
                               p.status === "active"
-                                ? "bg-emerald-500/10 text-emerald-700"
+                                ? "bg-emerald-500/[0.05] text-emerald-700"
                                 : "bg-muted text-muted-foreground"
                             )}>
                               <span className={cn("h-1.5 w-1.5 rounded-full", p.status === "active" ? "bg-emerald-500" : "bg-muted-foreground/50")} />
@@ -288,7 +288,7 @@ export default function PatientsPage() {
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-8 w-8 ring-1 ring-border/30">
-                                <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-bold">{initials}</AvatarFallback>
+                                <AvatarFallback className="bg-primary/[0.05] text-primary text-[10px] font-bold">{initials}</AvatarFallback>
                               </Avatar>
                               <div>
                                 <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm">
@@ -322,7 +322,7 @@ export default function PatientsPage() {
                             <span className={cn(
                               "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold",
                               p.status === "active"
-                                ? "bg-emerald-500/10 text-emerald-700"
+                                ? "bg-emerald-500/[0.05] text-emerald-700"
                                 : "bg-muted text-muted-foreground"
                             )}>
                               <span className={cn("h-1.5 w-1.5 rounded-full", p.status === "active" ? "bg-emerald-500" : "bg-muted-foreground/50")} />

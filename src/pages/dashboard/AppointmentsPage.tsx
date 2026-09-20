@@ -48,10 +48,10 @@ function label12(hhmm: string) {
 }
 
 const statusColors: Record<string, string> = {
-  scheduled: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20",
-  "in-progress": "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20",
-  completed: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
-  cancelled: "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20",
+  scheduled: "bg-blue-500/[0.05] text-blue-700 dark:text-blue-400 border-blue-500/20",
+  "in-progress": "bg-amber-500/[0.05] text-amber-700 dark:text-amber-400 border-amber-500/20",
+  completed: "bg-emerald-500/[0.05] text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
+  cancelled: "bg-red-500/[0.05] text-red-700 dark:text-red-400 border-red-500/20",
 };
 
 const statusDots: Record<string, string> = {
@@ -187,7 +187,7 @@ export default function AppointmentsPage() {
           <UserPlus className="mr-2 h-4 w-4" />
           Walk-In
         </Button>
-        <Button size="sm" className="bg-secondary hover:bg-secondary/90 shadow-lg shadow-secondary/20" onClick={() => setBookOpen(true)}>
+        <Button size="sm" className="bg-secondary hover:bg-secondary/90 " onClick={() => setBookOpen(true)}>
           <CalendarPlus className="mr-2 h-4 w-4" />
           Book Appointment
         </Button>
@@ -201,7 +201,7 @@ export default function AppointmentsPage() {
           </TabsList>
 
           <TabsContent value="schedule" className="mt-4">
-            <Card className="glass-card overflow-hidden">
+            <Card className="border bg-card shadow-sm overflow-hidden">
               <CardHeader className="pb-3 border-b border-border/30">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -269,7 +269,7 @@ export default function AppointmentsPage() {
                                 return (
                                   <td key={chair} className="py-1 px-2">
                                     {apt ? (
-                                      <div className={`rounded-lg border p-2.5 text-xs cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${statusColors[apt.status] || ""}`} onClick={() => setSelectedAppointment(apt)}>
+                                      <div className={`rounded-lg border p-2.5 text-xs cursor-pointer  transition-all duration-200  ${statusColors[apt.status] || ""}`} onClick={() => setSelectedAppointment(apt)}>
                                         <div className="flex items-center gap-2 mb-1">
                                           <Avatar className="h-5 w-5">
                                             <AvatarFallback className="text-[8px] bg-current/10">{apt.patientName.split(" ").map((n: string) => n[0]).join("")}</AvatarFallback>
@@ -296,7 +296,7 @@ export default function AppointmentsPage() {
                       {weekDays.map((day) => {
                         const isToday = isSameDay(day, new Date());
                         return (
-                          <button key={day.toISOString()} className={cn("p-4 rounded-xl border border-border/40 text-center hover:bg-accent/40 cursor-pointer transition-all duration-200 hover:shadow-md", isToday && "bg-secondary/10 border-secondary/30 shadow-sm")} onClick={() => { setCurrentDate(day); setViewMode("day"); }}>
+                          <button key={day.toISOString()} className={cn("p-4 rounded-xl border border-border/40 text-center hover:bg-accent/40 cursor-pointer transition-all duration-200 ", isToday && "bg-secondary/10 border-secondary/30 shadow-sm")} onClick={() => { setCurrentDate(day); setViewMode("day"); }}>
                             <div className="text-[10px] uppercase text-muted-foreground font-medium">{format(day, "EEE")}</div>
                             <div className="text-lg font-semibold mt-0.5">{format(day, "d")}</div>
                           </button>
@@ -354,7 +354,7 @@ export default function AppointmentsPage() {
           </TabsContent>
 
           <TabsContent value="list" className="mt-4">
-            <Card className="glass-card overflow-hidden">
+            <Card className="border bg-card shadow-sm overflow-hidden">
               <CardContent className="p-0">
                 {isLoading ? (
                   <TableSkeleton columns={6} rows={6} />

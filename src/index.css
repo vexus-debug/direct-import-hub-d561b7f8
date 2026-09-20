@@ -278,13 +278,7 @@
 }
 
 /* ─── Sidebar gradient ──────────────────────────────────── */
-.sidebar-gradient {
-  background: linear-gradient(
-    180deg,
-    hsl(var(--sidebar-grad-top)) 0%,
-    hsl(var(--sidebar-grad-bottom)) 100%
-  );
-}
+.sidebar-gradient { @apply bg-sidebar; }
 
 /* ─── Sidebar active item ───────────────────────────────── */
 .sidebar-active-item {
