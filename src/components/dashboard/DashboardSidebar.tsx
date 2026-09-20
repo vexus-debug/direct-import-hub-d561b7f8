@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import { LogOut, Building2, Shield, ChevronRight, Lock } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import clinexusLogoRect from "@/assets/clinexus-logo-rect.png";
+import clinexusLogoRect from "@/assets/clinexus-logo-dashboard.png.asset.json";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";

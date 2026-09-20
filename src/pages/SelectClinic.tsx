@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Building2, LogOut, ChevronRight, Shield } from "lucide-react";
 import { getRoleLabel } from "@/config/roleAccess";
-import clinexusLogo from "@/assets/clinexus-logo.png";
+import clinexusLogoAsset from "@/assets/clinexus-logo-dashboard.png.asset.json";
+
+const clinexusLogo = clinexusLogoAsset.url;
 
 export default function SelectClinic() {
   const { user, profile, orgMemberships, roles, loading, signOut, refetchUserData } = useAuth();

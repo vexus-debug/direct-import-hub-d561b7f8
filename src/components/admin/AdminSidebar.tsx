@@ -7,7 +7,9 @@ import {
 } from "@/components/ui/sidebar";
 import { LayoutDashboard, Building2, Users, BarChart3, LogOut, Shield, ScrollText, CreditCard, DollarSign, Megaphone, Ticket, Flag, Settings, Download, GitBranch, HardDrive, Bell, Activity, Palette, Radio } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import clinexusLogoWhite from "@/assets/clinexus-logo-white.png";
+import clinexusLogoWhiteAsset from "@/assets/clinexus-logo-dashboard.png.asset.json";
+
+const clinexusLogoWhite = clinexusLogoWhiteAsset.url;
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
