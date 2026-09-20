@@ -3,7 +3,7 @@
   "short_name": "Clinexus",
   "description": "Clinexus - Your all-in-one clinic management platform. Streamline appointments, billing, lab work, and more.",
   "id": "/",
-  "start_url": "/",
+  "start_url": "/select-clinic",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
