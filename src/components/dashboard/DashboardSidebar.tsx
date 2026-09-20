@@ -161,7 +161,7 @@ export function DashboardSidebar() {
       <div className="flex items-center gap-3 px-4 py-[1.125rem] border-b border-white/8">
         <div className="relative shrink-0">
           <img
-            src={clinexusLogoRect}
+            src={clinexusLogoRect.url}
             alt="Clinexus"
             className="h-7 w-auto object-contain mix-blend-screen"
           />
