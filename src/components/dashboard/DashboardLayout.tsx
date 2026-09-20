@@ -14,8 +14,8 @@ interface DashboardLayoutProps {
 
 const springTransition = {
   type: "spring" as const,
-  stiffness: 350,
-  damping: 30,
+  stiffness: 280,
+  damping: 35,
   mass: 0.8,
 };
 
