@@ -10,6 +10,8 @@ const navLinks = [
   { label: "Industries", to: "/industries" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
+  { label: "Privacy Policy", to: "/privacy" },
+  { label: "Terms of Service", to: "/terms" },
 ];
 
 const isDark = (pathname: string) =>
