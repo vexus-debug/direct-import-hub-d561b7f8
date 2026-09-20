@@ -52,11 +52,27 @@ function swAllowed() {
 async function unregisterAppSw() {
   if (!("serviceWorker" in navigator)) return;
   const regs = await navigator.serviceWorker.getRegistrations();
-  await Promise.allSettled(
+  const removed = await Promise.all(
     regs
       .filter((r) => (r.active?.scriptURL || r.installing?.scriptURL || r.waiting?.scriptURL || "").endsWith(SW_URL))
-      .map((r) => r.unregister()),
+      .map((r) => r.unregister().catch(() => false)),
   );
+  const hadSw = removed.some(Boolean);
+  if (!hadSw) return;
+
+  // A stale service worker was controlling this page: purge its caches and
+  // reload once so the page is served straight from the network.
+  if ("caches" in window) {
+    const keys = await caches.keys();
+    await Promise.allSettled(keys.filter((k) => k.startsWith("clinexus-") || k.startsWith("workbox-")).map((k) => caches.delete(k)));
+  }
+  if (navigator.serviceWorker.controller) {
+    const key = "clinexus-sw-purge-reload";
+    if (!sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, "1");
+      window.location.reload();
+    }
+  }
 }
 
 interface PwaContextValue {
