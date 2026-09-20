@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import {
   useDashboardStats, useWeeklyAppointments, useRevenueData,
-  useTodaySchedule, useRecentActivity, useCurrentUserName, useTreatmentDistribution,
+  useTodaySchedule, useRecentActivity, useTreatmentDistribution,
 } from "@/hooks/useDashboardData";
 import { format } from "date-fns";
 import { useOrg } from "@/hooks/useOrg";
@@ -73,13 +73,6 @@ const tooltipStyle = {
 };
 
 /* ─── Greeting helper ────────────────────────────────────────── */
-function getGreeting() {
-  const h = new Date().getHours();
-  if (h < 12) return "Good morning";
-  if (h < 17) return "Good afternoon";
-  return "Good evening";
-}
-
 /* ═══════════════════════════════════════════════════════════════
    Dashboard Home — Premium Bento Layout
 ═══════════════════════════════════════════════════════════════ */
@@ -91,7 +84,6 @@ export default function DashboardHome() {
   const { data: revenueData } = useRevenueData();
   const { data: todayAppointments } = useTodaySchedule();
   const { data: activities } = useRecentActivity();
-  const { data: userName } = useCurrentUserName();
   const { data: treatmentDist, isLoading: treatmentDistLoading } = useTreatmentDistribution();
   const { currentOrg, basePath } = useOrg();
   const orgRole = currentOrg?.role || "receptionist";

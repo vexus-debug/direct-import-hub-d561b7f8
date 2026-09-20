@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 /*
-  Clinexus Design System — "Bold Gradient Hero"
-  Dark navy-to-teal gradient sidebar + crisp white content area
-  Premium SaaS aesthetic inspired by Linear, Stripe, Vercel
+  Clinexus Design System — quiet clinical operations
+  Calm neutral surfaces, restrained teal accents, and clear hierarchy
   All colours in HSL format
 */
 
@@ -89,7 +88,7 @@
     --shadow-md:  0 4px 8px -1px hsl(215 28% 12% / 0.08), 0 2px 4px -2px hsl(215 28% 12% / 0.05);
     --shadow-lg:  0 10px 20px -3px hsl(215 28% 12% / 0.10), 0 4px 8px -4px hsl(215 28% 12% / 0.05);
     --shadow-xl:  0 20px 32px -5px hsl(215 28% 12% / 0.12), 0 8px 12px -6px hsl(215 28% 12% / 0.05);
-    --widget-shadow: 0 12px 28px -18px hsl(215 28% 12% / 0.28), 0 2px 8px -4px hsl(215 28% 12% / 0.10);
+    --widget-shadow: 0 1px 2px 0 hsl(215 28% 12% / 0.04);
 
     /* ── Sidebar: Dark navy → rich teal gradient ── */
     --sidebar-background: 215 55% 11%;
@@ -226,11 +225,6 @@
 
 
 
-  .sing-widget:has([role='table'])::after,
-  .sing-widget:has(table)::after {
-    opacity: 0.35;
-  }
-
   .widget-controls-dots {
     color: hsl(var(--widget-control));
   }
@@ -245,7 +239,7 @@
 .stat-card {
   position: relative;
   overflow: hidden;
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.28s;
+  transition: border-color 0.15s ease;
   border: 1px solid hsl(var(--border));
   background: hsl(var(--card));
 }
@@ -257,11 +251,11 @@
 
 /* ─── Card hover lift ───────────────────────────────────── */
 .card-hover {
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.28s;
+  transition: border-color 0.15s ease;
 }
 .card-hover:hover {
   
-  box-shadow: var(--shadow-lg);
+  border-color: hsl(var(--primary) / 0.25);
 }
 
 /* ─── Dashboard background ──────────────────────────────── */
@@ -274,7 +268,7 @@
 .glass-card {
   background: hsl(var(--card));
   border: 1px solid hsl(var(--widget-border));
-  box-shadow: var(--widget-shadow);
+  box-shadow: var(--shadow-xs);
 }
 
 /* ─── Sidebar gradient ──────────────────────────────────── */

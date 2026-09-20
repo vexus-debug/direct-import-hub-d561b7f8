@@ -5,40 +5,16 @@ import { DashboardHeader } from "./DashboardHeader";
 import { AICopilotPanel } from "./AICopilotPanel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLocation, useNavigationType } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-const springTransition = {
-  type: "spring" as const,
-  stiffness: 280,
-  damping: 35,
-  mass: 0.8,
-};
-
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [aiOpen, setAiOpen] = useState(false);
   const isMobile = useIsMobile();
   const location = useLocation();
-  const navType = useNavigationType();
-  const isBack = navType === "POP";
-
-  // Mobile Chrome shows composited-tile corruption (horizontal noise lines)
-  // when large scrolling subtrees are transformed/scaled. Use a plain fade
-  // on mobile and keep the slide only on desktop.
-  const pageVariants = isMobile
-    ? {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        exit: { opacity: 0 },
-      }
-    : {
-        initial: { opacity: 0, x: isBack ? -40 : 40, scale: 0.98 },
-        animate: { opacity: 1, x: 0, scale: 1 },
-        exit: { opacity: 0, x: isBack ? 40 : -40, scale: 0.98 },
-      };
 
   return (
     <SidebarProvider>
@@ -62,11 +38,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={location.pathname}
-                        variants={pageVariants}
-                        initial="initial"
-                        animate="animate"
-                        exit="exit"
-                        transition={{ duration: 0.2 }}
+                        initial={{ opacity: 1 }}
+                        animate={{ opacity: 1 }}
                         className="mx-auto w-full max-w-[1540px]"
                       >
                         {children}
@@ -94,11 +67,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={location.pathname}
-                    variants={pageVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    transition={springTransition}
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: 1 }}
                     className="gpu-accelerated mx-auto w-full max-w-[1540px]"
                   >
                     {children}

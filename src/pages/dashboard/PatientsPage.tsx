@@ -20,13 +20,7 @@ import { usePatients } from "@/hooks/usePatients";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 import { TableSkeleton } from "@/components/dashboard/TableSkeleton";
 import { EmptyState } from "@/components/dashboard/EmptyState";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-const stagger = {
-  container: { hidden: {}, visible: { transition: { staggerChildren: 0.04 } } },
-  item: { hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3 } } },
-};
 
 export default function PatientsPage() {
   const navigate = useNavigate();
@@ -106,7 +100,7 @@ export default function PatientsPage() {
       >
         <Button
           size="sm"
-          className="bg-primary hover:bg-primary/90 shadow-sm shadow-primary/20 gap-1.5"
+          className="gap-1.5"
           onClick={() => setAddOpen(true)}
         >
           <UserPlus className="h-4 w-4" />
@@ -114,8 +108,8 @@ export default function PatientsPage() {
         </Button>
       </PageHeader>
 
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-        <Card className="border-border bg-card shadow-sm overflow-hidden">
+      <div>
+        <Card className="overflow-hidden border-border bg-card">
 
           {/* Toolbar */}
           <CardHeader className="pb-3 border-b border-border/50">
@@ -192,18 +186,15 @@ export default function PatientsPage() {
 
               /* ── Card Grid View ── */
               <div className="p-4">
-                <motion.div
+                <div
                   className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                  variants={stagger.container}
-                  initial="hidden"
-                  animate="visible"
                 >
                   {filtered.map((p) => {
                     const initials = `${p.first_name[0]}${p.last_name[0]}`.toUpperCase();
                     return (
-                      <motion.div key={p.id} variants={stagger.item}>
+                      <div key={p.id}>
                         <div
-                          className="group relative p-4 rounded-xl border border-border hover:border-primary/30 bg-card  transition-all duration-200 cursor-pointer"
+                          className="group relative cursor-pointer rounded-md border border-border bg-card p-4 transition-colors hover:border-primary/30"
                           onClick={() => navigate(`${basePath}/patients/${p.id}`)}
                         >
                           <div className="flex items-center gap-3 mb-3">
@@ -244,10 +235,10 @@ export default function PatientsPage() {
                             </div>
                           )}
                         </div>
-                      </motion.div>
+                      </div>
                     );
                   })}
-                </motion.div>
+                </div>
               </div>
 
             ) : (
@@ -274,16 +265,13 @@ export default function PatientsPage() {
                     {filtered.map((p, i) => {
                       const initials = `${p.first_name[0]}${p.last_name[0]}`.toUpperCase();
                       return (
-                        <motion.tr
+                        <tr
                           key={p.id}
                           className={cn(
-                            "border-b border-border/30 last:border-0 hover:bg-muted/30 transition-all duration-150 cursor-pointer group",
+                            "border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer group",
                             i % 2 === 0 ? "bg-card" : "bg-muted/10"
                           )}
                           onClick={() => navigate(`${basePath}/patients/${p.id}`)}
-                          initial={{ opacity: 0, x: -6 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.02 }}
                         >
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
@@ -354,7 +342,7 @@ export default function PatientsPage() {
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </td>
-                        </motion.tr>
+                        </tr>
                       );
                     })}
                   </tbody>
@@ -363,7 +351,7 @@ export default function PatientsPage() {
             )}
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
 
       <AddPatientDialog open={addOpen} onOpenChange={setAddOpen} />
       <BookAppointmentDialog open={bookOpen} onOpenChange={setBookOpen} preselectedPatientId={selectedPatientId} />
