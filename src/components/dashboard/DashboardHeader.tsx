@@ -1,16 +1,18 @@
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, User, Settings, LogOut, ChevronDown, ChevronRight, Sparkles, Menu } from "lucide-react";
+import { Bell, User, Settings, LogOut, ChevronDown, Command, ChevronRight, Search, Stethoscope, Menu } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrg } from "@/hooks/useOrg";
 import { useUnreadCount } from "@/hooks/useNotifications";
 import { extractRelativePath } from "@/config/roleAccess";
+import { motion } from "framer-motion";
 
 const breadcrumbLabels: Record<string, string> = {
   "dashboard": "Dashboard",
@@ -68,7 +70,7 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
   const isHome = currentPage === "Dashboard";
 
   return (
-    <header className="relative sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border bg-card px-4 lg:px-6">
+    <header className="header-accent relative sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border bg-card px-4 lg:px-6 shadow-sm">
 
       {/* Desktop: icon-only */}
       <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground hidden md:flex" />
@@ -95,17 +97,29 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
         )}
       </nav>
 
-      <div className="ml-auto flex items-center gap-1">
+      {/* Search */}
+      <div className="relative flex-1 max-w-xs ml-auto">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+        <Input
+          placeholder="Search…"
+          className="pl-8 pr-14 h-8 text-sm bg-muted/50 border-border/60 focus-visible:bg-card focus-visible:ring-1 focus-visible:ring-primary/30 rounded-lg"
+        />
+        <kbd className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none inline-flex h-5 items-center gap-0.5 rounded border border-border/60 bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+          <Command className="h-2.5 w-2.5" />K
+        </kbd>
+      </div>
+
+      <div className="flex items-center gap-1">
         {/* AI Toggle - hidden on mobile since mobile has bottom bar */}
         {onToggleAI && (
           <Button
             variant={aiOpen ? "default" : "ghost"}
             size="icon"
-            className={aiOpen ? "hidden h-8 w-8 md:flex" : "hidden h-8 w-8 text-muted-foreground md:flex"}
+            className={`hidden md:flex h-8 w-8 rounded-lg transition-all ${aiOpen ? "" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"}`}
             onClick={onToggleAI}
-            title="Open assistant"
+            title="AI Assistant"
           >
-            <Sparkles className="h-4 w-4" />
+            <Stethoscope className="h-4 w-4" />
           </Button>
         )}
 
@@ -114,9 +128,13 @@ export function DashboardHeader({ onToggleAI, aiOpen }: DashboardHeaderProps = {
           <Link to={`${basePath}/notifications`}>
             <Bell className="h-4 w-4" />
             {unreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[10px] font-semibold text-destructive-foreground">
+              <motion.span
+                className="absolute -top-0.5 -right-0.5 h-4 min-w-4 rounded-full bg-destructive text-[9px] font-bold text-white flex items-center justify-center px-0.5"
+                animate={{ scale: [1, 1.25, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
                 {unreadCount > 99 ? "99+" : unreadCount}
-              </span>
+              </motion.span>
             )}
           </Link>
         </Button>

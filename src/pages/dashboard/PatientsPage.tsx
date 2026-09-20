@@ -20,7 +20,13 @@ import { usePatients } from "@/hooks/usePatients";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 import { TableSkeleton } from "@/components/dashboard/TableSkeleton";
 import { EmptyState } from "@/components/dashboard/EmptyState";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+
+const stagger = {
+  container: { hidden: {}, visible: { transition: { staggerChildren: 0.04 } } },
+  item: { hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3 } } },
+};
 
 export default function PatientsPage() {
   const navigate = useNavigate();
@@ -100,7 +106,7 @@ export default function PatientsPage() {
       >
         <Button
           size="sm"
-          className="gap-1.5"
+          className="bg-primary hover:bg-primary/90 shadow-sm shadow-primary/20 gap-1.5"
           onClick={() => setAddOpen(true)}
         >
           <UserPlus className="h-4 w-4" />
@@ -108,8 +114,8 @@ export default function PatientsPage() {
         </Button>
       </PageHeader>
 
-      <div>
-        <Card className="overflow-hidden border-border bg-card">
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+        <Card className="border-border bg-card shadow-sm overflow-hidden">
 
           {/* Toolbar */}
           <CardHeader className="pb-3 border-b border-border/50">
@@ -186,20 +192,23 @@ export default function PatientsPage() {
 
               /* ── Card Grid View ── */
               <div className="p-4">
-                <div
+                <motion.div
                   className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  variants={stagger.container}
+                  initial="hidden"
+                  animate="visible"
                 >
                   {filtered.map((p) => {
                     const initials = `${p.first_name[0]}${p.last_name[0]}`.toUpperCase();
                     return (
-                      <div key={p.id}>
+                      <motion.div key={p.id} variants={stagger.item}>
                         <div
-                          className="group relative cursor-pointer rounded-md border border-border bg-card p-4 transition-colors hover:border-primary/30"
+                          className="group relative p-4 rounded-xl border border-border hover:border-primary/30 bg-card hover:shadow-md transition-all duration-200 cursor-pointer"
                           onClick={() => navigate(`${basePath}/patients/${p.id}`)}
                         >
                           <div className="flex items-center gap-3 mb-3">
-                            <Avatar className="h-10 w-10 ring-1 ring-border group-hover:ring-primary/20 transition-all">
-                              <AvatarFallback className="bg-primary/[0.05] text-primary text-sm font-bold">{initials}</AvatarFallback>
+                            <Avatar className="h-10 w-10 ring-2 ring-border group-hover:ring-primary/20 transition-all">
+                              <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">{initials}</AvatarFallback>
                             </Avatar>
                             <div className="min-w-0">
                               <p className="font-semibold text-sm text-foreground truncate group-hover:text-primary transition-colors">
@@ -212,7 +221,7 @@ export default function PatientsPage() {
                             <span className={cn(
                               "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold",
                               p.status === "active"
-                                ? "bg-emerald-500/[0.05] text-emerald-700"
+                                ? "bg-emerald-500/10 text-emerald-700"
                                 : "bg-muted text-muted-foreground"
                             )}>
                               <span className={cn("h-1.5 w-1.5 rounded-full", p.status === "active" ? "bg-emerald-500" : "bg-muted-foreground/50")} />
@@ -235,10 +244,10 @@ export default function PatientsPage() {
                             </div>
                           )}
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
-                </div>
+                </motion.div>
               </div>
 
             ) : (
@@ -265,18 +274,21 @@ export default function PatientsPage() {
                     {filtered.map((p, i) => {
                       const initials = `${p.first_name[0]}${p.last_name[0]}`.toUpperCase();
                       return (
-                        <tr
+                        <motion.tr
                           key={p.id}
                           className={cn(
-                            "border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer group",
+                            "border-b border-border/30 last:border-0 hover:bg-muted/30 transition-all duration-150 cursor-pointer group",
                             i % 2 === 0 ? "bg-card" : "bg-muted/10"
                           )}
                           onClick={() => navigate(`${basePath}/patients/${p.id}`)}
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.02 }}
                         >
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-8 w-8 ring-1 ring-border/30">
-                                <AvatarFallback className="bg-primary/[0.05] text-primary text-[10px] font-bold">{initials}</AvatarFallback>
+                                <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-bold">{initials}</AvatarFallback>
                               </Avatar>
                               <div>
                                 <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm">
@@ -310,7 +322,7 @@ export default function PatientsPage() {
                             <span className={cn(
                               "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold",
                               p.status === "active"
-                                ? "bg-emerald-500/[0.05] text-emerald-700"
+                                ? "bg-emerald-500/10 text-emerald-700"
                                 : "bg-muted text-muted-foreground"
                             )}>
                               <span className={cn("h-1.5 w-1.5 rounded-full", p.status === "active" ? "bg-emerald-500" : "bg-muted-foreground/50")} />
@@ -342,7 +354,7 @@ export default function PatientsPage() {
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </td>
-                        </tr>
+                        </motion.tr>
                       );
                     })}
                   </tbody>
@@ -351,7 +363,7 @@ export default function PatientsPage() {
             )}
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
 
       <AddPatientDialog open={addOpen} onOpenChange={setAddOpen} />
       <BookAppointmentDialog open={bookOpen} onOpenChange={setBookOpen} preselectedPatientId={selectedPatientId} />

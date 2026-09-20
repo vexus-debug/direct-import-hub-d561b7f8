@@ -87,11 +87,12 @@ export function DashboardSidebar() {
           <motion.div
             layoutId="sidebar-active-bg"
             className="absolute inset-0 rounded-lg bg-sidebar-primary/10"
+            transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
           />
         )}
         <item.icon className={cn(
           "h-4 w-4 shrink-0 relative z-10 transition-all duration-200",
-          active ? "text-sidebar-primary" : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80 "
+          active ? "text-sidebar-primary" : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80 group-hover:scale-110"
         )} />
         {!collapsed && (
           <span className="relative z-10 truncate">{item.title}</span>
@@ -152,6 +153,9 @@ export function DashboardSidebar() {
     <Sidebar
       collapsible="icon"
       className="border-r-0 transition-all duration-300"
+      style={{
+        background: `linear-gradient(180deg, hsl(var(--sidebar-grad-top)) 0%, hsl(var(--sidebar-grad-bottom)) 100%)`,
+      }}
     >
       {/* ── Logo / Clinic Name ── */}
       <div className="flex items-center gap-3 px-4 py-[1.125rem] border-b border-white/8">
@@ -165,6 +169,10 @@ export function DashboardSidebar() {
         <AnimatePresence>
           {!collapsed && (
             <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.2 }}
               className="flex flex-col overflow-hidden"
             >
               <span className="text-[13px] font-bold text-white truncate leading-tight">
@@ -245,6 +253,10 @@ export function DashboardSidebar() {
           <AnimatePresence>
             {!collapsed && (
               <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                transition={{ duration: 0.2 }}
                 className="flex items-center flex-1 min-w-0 gap-2"
               >
                 <button

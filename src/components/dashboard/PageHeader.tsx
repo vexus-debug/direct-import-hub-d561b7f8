@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { motion } from "framer-motion";
 import { PageTutorial, PageTutorialProps } from "@/components/dashboard/PageTutorial";
 import { PageTourButton } from "@/components/dashboard/tour/PageTourButton";
 
@@ -13,17 +14,20 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, children, badge, tutorial }: PageHeaderProps) {
   return (
-    <div
+    <motion.div
       data-tour="page-header"
-      className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between"
+      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
     >
       <div>
         <div className="flex items-center gap-2.5">
 
-          <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">{title}</h1>
           {badge}
         </div>
-        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+        <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
       </div>
       <div className="flex items-center gap-2" data-tour="page-actions">
         <PageTourButton />
@@ -31,6 +35,6 @@ export function PageHeader({ title, description, children, badge, tutorial }: Pa
         {children}
       </div>
 
-    </div>
+    </motion.div>
   );
 }
