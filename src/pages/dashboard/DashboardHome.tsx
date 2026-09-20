@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
   Users, CalendarDays, CreditCard, TrendingUp, UserPlus, CalendarPlus, FileText,
-  Clock, Activity, ArrowUpRight, ArrowDownRight, Zap, ChevronRight, Stethoscope, CalendarCheck,
+  Clock, Activity, Zap, ChevronRight, CalendarCheck,
   CircleDot, BarChart3,
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  Area, AreaChart, RadialBarChart, RadialBar, Cell,
+  Area, AreaChart,
 } from "recharts";
 import {
   useDashboardStats, useWeeklyAppointments, useRevenueData,
@@ -58,44 +58,19 @@ function formatCurrency(amount: number) {
   }).format(amount);
 }
 
-/* ─── Animation variants ─────────────────────────────────────── */
 const stagger = {
-  container: { hidden: {}, visible: { transition: { staggerChildren: 0.06 } } },
-  item: {
-    hidden: { opacity: 0, y: 18, scale: 0.97 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] as const } },
-  },
+  container: { hidden: {}, visible: {} },
+  item: { hidden: { opacity: 1 }, visible: { opacity: 1 } },
 };
 
 /* ─── Tooltip style ──────────────────────────────────────────── */
 const tooltipStyle = {
   backgroundColor: "hsl(var(--card))",
   border: "1px solid hsl(var(--border))",
-  borderRadius: "10px",
+  borderRadius: "6px",
   fontSize: "12px",
-  boxShadow: "0 8px 24px -4px hsl(var(--foreground) / 0.08)",
+  boxShadow: "0 1px 2px hsl(var(--foreground) / 0.08)",
 };
-
-/* ─── Radial gauge component ────────────────────────────────── */
-function RadialGauge({ value, max, label, color }: { value: number; max: number; label: string; color: string }) {
-  const pct = max > 0 ? Math.round((value / max) * 100) : 0;
-  const data = [{ value: pct, fill: color }];
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <div className="relative h-[90px] w-[90px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <RadialBarChart cx="50%" cy="50%" innerRadius="72%" outerRadius="100%" startAngle={90} endAngle={-270} data={data} barSize={8}>
-            <RadialBar background={{ fill: "hsl(var(--muted))" }} dataKey="value" cornerRadius={10} />
-          </RadialBarChart>
-        </ResponsiveContainer>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-bold text-foreground tabular-nums">{pct}%</span>
-        </div>
-      </div>
-      <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">{label}</span>
-    </div>
-  );
-}
 
 /* ─── Greeting helper ────────────────────────────────────────── */
 function getGreeting() {
@@ -156,140 +131,53 @@ export default function DashboardHome() {
   return (
     <div className="space-y-5">
 
-      {/* ── Row 1: Compact Welcome Strip ──────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-1" data-tour="page-header">
+      <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between" data-tour="page-header">
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-clinic-teal-light flex items-center justify-center ">
-                <Stethoscope className="h-4 w-4 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-foreground tracking-normal leading-tight">
-                  {getGreeting()}, {userName || "Doctor"}
-                </h1>
-                <p className="text-xs text-muted-foreground">
-                  {format(new Date(), "EEEE, MMMM d")} · {schedule.length} appointment{schedule.length !== 1 ? "s" : ""} today
-                </p>
-              </div>
-            </div>
+            <h1 className="text-2xl font-semibold text-foreground">Today</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {format(new Date(), "EEEE, MMMM d")} · {schedule.length} appointment{schedule.length !== 1 ? "s" : ""} scheduled
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 shrink-0" data-tour="dashboard-quick-actions">
             <PageTourButton />
             {quickActions.map((action: any) => (
-              <Button key={action.to} size="sm" variant="outline" className="gap-1.5 rounded-lg text-xs border-border hover:border-primary/40 hover:bg-primary/5 transition-all" asChild>
+              <Button key={action.to} size="sm" variant="outline" asChild>
                 <Link to={action.to}>
-                  <action.icon className="h-3.5 w-3.5 text-primary" />
+                  <action.icon className="h-3.5 w-3.5" />
                   {action.title}
                 </Link>
               </Button>
             ))}
           </div>
-        </div>
-      </motion.div>
+      </div>
 
-      {/* ── Row 2: Bento KPI Grid ──────────────────────────────── */}
-      <motion.div
-        className="grid gap-3 grid-cols-2 lg:grid-cols-4"
-        data-tour="dashboard-kpi-cards"
-        variants={stagger.container}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Patient count — large number card */}
+      <div className="grid grid-cols-2 overflow-hidden rounded-md border border-border bg-card lg:grid-cols-4" data-tour="dashboard-kpi-cards">
         {canSeePatients && (
-          <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 bg-card h-full group   transition-all duration-300">
-              <CardContent className="p-5 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between">
-                  <div className="h-9 w-9 rounded-xl bg-primary/[0.05] flex items-center justify-center">
-                    <Users className="h-4.5 w-4.5 text-primary" />
-                  </div>
-                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 bg-emerald-500/[0.05] px-2 py-0.5 rounded-full">
-                    <ArrowUpRight className="h-3 w-3" /> +12%
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <p className="text-3xl font-bold tracking-normal text-foreground tabular-nums">
-                    <AnimatedCounter value={s.totalPatients} />
-                  </p>
-                  <p className="text-[11px] font-medium text-muted-foreground mt-0.5 uppercase tracking-wider">Total Patients</p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <div className="border-b border-r border-border p-4 lg:border-b-0">
+            <p className="text-sm text-muted-foreground">Total patients</p>
+            <p className="mt-2 text-2xl font-semibold tabular-nums"><AnimatedCounter value={s.totalPatients} /></p>
+          </div>
         )}
-
-        {/* Today's appointments — radial gauge */}
         {canSeeAppointments && (
-          <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 bg-card h-full group   transition-all duration-300">
-              <CardContent className="p-5 flex flex-col items-center justify-center h-full">
-                <RadialGauge
-                  value={schedule.filter(a => a.status === "completed").length}
-                  max={Math.max(s.todayAppointments, 1)}
-                  label="Completed"
-                  color="hsl(var(--success))"
-                />
-                <div className="text-center mt-2">
-                  <p className="text-2xl font-bold text-foreground tabular-nums">
-                    <AnimatedCounter value={s.todayAppointments} />
-                  </p>
-                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Today's Appointments</p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <div className="border-b border-border p-4 lg:border-b-0 lg:border-r">
+            <p className="text-sm text-muted-foreground">Appointments today</p>
+            <p className="mt-2 text-2xl font-semibold tabular-nums"><AnimatedCounter value={s.todayAppointments} /></p>
+            <p className="mt-1 text-xs text-muted-foreground">{completedToday} completed</p>
+          </div>
         )}
-
-        {/* Pending Payments — accent warning card */}
         {canSeeBilling && (
-          <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 bg-card h-full group   transition-all duration-300">
-              <CardContent className="p-5 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between">
-                  <div className="h-9 w-9 rounded-xl bg-gold/[0.05] flex items-center justify-center">
-                    <CreditCard className="h-4.5 w-4.5 text-gold-deep" />
-                  </div>
-                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-red-600 bg-red-500/[0.05] px-2 py-0.5 rounded-full">
-                    <ArrowDownRight className="h-3 w-3" /> -5%
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <p className="text-3xl font-bold tracking-normal text-foreground tabular-nums">
-                    <AnimatedCounter value={s.pendingPayments} />
-                  </p>
-                  <p className="text-[11px] font-medium text-muted-foreground mt-0.5 uppercase tracking-wider">Pending Payments</p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <div className="border-r border-border p-4">
+            <p className="text-sm text-muted-foreground">Pending payments</p>
+            <p className="mt-2 text-2xl font-semibold tabular-nums"><AnimatedCounter value={s.pendingPayments} /></p>
+          </div>
         )}
-
-        {/* Monthly Revenue — hero metric */}
         {canSeeBilling && (
-          <motion.div variants={stagger.item}>
-            <Card className="relative overflow-hidden border-border/50 h-full group   transition-all duration-300">
-                  </div>
-                  <div className="flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 bg-emerald-500/[0.05] px-2 py-0.5 rounded-full">
-                    <ArrowUpRight className="h-3 w-3" /> +8.2%
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <p className="text-2xl font-bold tracking-normal text-foreground tabular-nums">
-                    <AnimatedCounter value={s.monthlyRevenue} formatter={formatCurrency} />
-                  </p>
-                  <p className="text-[11px] font-medium text-muted-foreground mt-0.5 uppercase tracking-wider">Revenue ({format(new Date(), "MMM")})</p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <div className="p-4">
+            <p className="text-sm text-muted-foreground">Revenue in {format(new Date(), "MMMM")}</p>
+            <p className="mt-2 text-2xl font-semibold tabular-nums"><AnimatedCounter value={s.monthlyRevenue} formatter={formatCurrency} /></p>
+          </div>
         )}
-      </motion.div>
+      </div>
 
       {/* ── Row 2b: Insight widgets ─────────────────────────────── */}
       <motion.div
@@ -306,7 +194,7 @@ export default function DashboardHome() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Clock className="h-3.5 w-3.5 text-primary" />
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Next Up</p>
+                  <p className="text-sm font-medium text-muted-foreground">Next appointment</p>
                 </div>
                 {nextAppointment ? (
                   <div className="min-w-0">
@@ -330,7 +218,7 @@ export default function DashboardHome() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Zap className="h-3.5 w-3.5 text-emerald-600" />
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Today's Progress</p>
+                  <p className="text-sm font-medium text-muted-foreground">Today's progress</p>
                 </div>
                 <p className="text-lg font-bold tabular-nums text-foreground">
                   {completedToday}/{schedule.length || 0} <span className="text-xs font-medium text-muted-foreground">completed</span>
@@ -358,7 +246,7 @@ export default function DashboardHome() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp className="h-3.5 w-3.5 text-primary" />
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Revenue Pace</p>
+                  <p className="text-sm font-medium text-muted-foreground">Revenue pace</p>
                 </div>
                 <p className="text-lg font-bold tabular-nums text-foreground truncate">{formatCurrency(avgMonthlyRevenue)}</p>
                 <p className="text-[11px] text-muted-foreground mt-1">
